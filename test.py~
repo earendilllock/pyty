@@ -8,6 +8,14 @@ def randomtensor(r,dimension,d):
   u=list(arange(d))
   for i in range(0,d):
     u[i]=randn(dimension[i],r)
+#for i in range(0,dimension[0]):
+#  for j in range(0,dimension[1]):
+#    for k in range(0,dimension[2]):
+#      s=0
+#      for alf in range(0,r):
+#        s=s+u[0][i,alf]*u[1][j,alf]*u[2][k,alf]
+#      a[i,j,k]=s
+  
   s=1
   tr=u[0]
   temp=list(arange(d-2))
