@@ -8,6 +8,7 @@ def randomtensor(r,dimension,d):
   u=list(arange(d))
   for i in range(0,d):
     u[i]=randn(dimension[i],r)
+  u0=[x.copy() for x in u]
   s=1
   tr=u[0]
   temp=list(arange(d-2))
@@ -21,13 +22,5 @@ def randomtensor(r,dimension,d):
     s=size(tr)/r
     tr=tr.reshape(s,r,order='F')
   tr=tr.reshape(dimension,order='F')
-  return tr
+  return tr,u0
 
-r=4
-d=3
-a=zeros(((4,5,6)))
-dimension=zeros(d, dtype = int)
-dimension[0]=4
-dimension[1]=5
-dimension[2]=6
-tensorrnd=randomtensor(r,dimension,d)

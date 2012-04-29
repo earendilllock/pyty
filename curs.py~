@@ -17,7 +17,7 @@ a,u0=randomtensor(r,dimension,size(dimension))
 norma=norm(a)
 appr=zeros(((d1,d2,d3)))
 f=zeros((dimension[0],r))
-while(norma>10**(-6)):
+while(norma>10**(-2)):
   m=(dot(v.transpose(),v))*(dot(w.transpose(),w))
   f=zeros((dimension[0],r))
   for i in range (0,dimension[0]):
