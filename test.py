@@ -24,3 +24,5 @@ def randomtensor(r,dimension,d):
   tr=tr.reshape(dimension,order='F')
   return tr,u0
 
+
+
