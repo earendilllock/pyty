@@ -15,7 +15,7 @@ def randomtensor(r,dimension,d):
   for j in range(0,d-2):
     temp[j]=zeros((r,r*dimension[j+1]))
     for i in range(0,r):
-      temp[j][i,i*dimension[1]:i*dimension[1]+dimension[1]]=u[j+1][:,i].transpose()
+      temp[j][i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
     u[j+1]=temp[j].transpose()	
   for i in range(0,d-1):
     tr=dot(tr,u[i+1].transpose())
