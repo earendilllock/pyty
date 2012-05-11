@@ -1,7 +1,7 @@
 from numpy import *
 from numpy.linalg import *
 from pylab import *
-from test import randomtensor
+from test import *
 
 #n=128
 d1=4
@@ -62,4 +62,5 @@ while(norma>10**(-6)):
         for alf in range(0,r):
           appr[i,j,k]=appr[i,j,k]+u[i,alf]*v[j,alf]*w[k,alf]
   norma=norm(a-appr)
+  
   print('norma nevyazki',norma)
