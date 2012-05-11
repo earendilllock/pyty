@@ -47,13 +47,15 @@ def lefts(u,k,d):
       m=m*dot(u[i].transpose(),u[i])
   return m
     
+d=3
+d1=2
+d2=2
+d3=2
+d4=2
+d5=2
+#dimension=[d1,d2,d3]
 d=5
-d1=4
-d2=5
-d3=6
-d4=7
-d5=8
-dimension=[d1,d2,d3,d4,d5]
+dimension=[4,4,4,4,4]
 r=2
 
 
@@ -62,17 +64,16 @@ norma=norm(a1)
 a=a1.copy()
 u=list(arange(d))
 for i in range(0,d):
-  u[i]=randn(dimension[i],r)
-
-#f1=rights(a,u,dimension,d,r,1)
-while(norma>10**(-6)):
-  for i in range(0,d):
-    y=rights(a,u,dimension,d,r,i)
-    l=lefts(u,i,d)
-    u[i]=solve(l,y.transpose()).transpose()
-  a=gettensor(u,r,dimension,d)
-  norma=norm(a1-a)
-  print('norma nevyazki',norma)
-
+    u[i]=randn(dimension[i],r)
+eps=1e-6
+norma=2*eps
+while(norma>eps):
+    for i in range(0,d):
+        y=rights(a,u,dimension,d,r,i)
+        l=lefts(u,i,d)
+        u[i]=solve(l,y.transpose()).transpose()
+    a1=gettensor(u,r,dimension,d)
+    norma=norm(a1-a)
+    print('norma nevyazki',norma)
   
 
