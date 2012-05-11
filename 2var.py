@@ -55,19 +55,19 @@ d4=2
 d5=2
 #dimension=[d1,d2,d3]
 d=5
-dimension=[4,4,4,4,4]
+dimension=[4,2,4,4,4]
 r=2
 
 
 a1,u0=randomtensor(r,dimension,size(dimension))
 norma=norm(a1)
+nrm=norma
 a=a1.copy()
 u=list(arange(d))
 for i in range(0,d):
     u[i]=randn(dimension[i],r)
 eps=1e-6
-norma=2*eps
-while(norma>eps):
+while(norma>eps*nrm):
     for i in range(0,d):
         y=rights(a,u,dimension,d,r,i)
         l=lefts(u,i,d)
