@@ -3,23 +3,23 @@ from numpy.linalg import *
 from pylab import *
 from test import randomtensor
 
+
 def gettensor(u1,r,dimension,d):
   u=[x.copy() for x in u1]
   s=1
   tr=u[0]
   temp=list(arange(d-2))
   for j in range(0,d-2):
-    temp[j]=zeros((r,r*dimension[j+1]))
+    temp=zeros((r,r*dimension[j+1]))
     for i in range(0,r):
-      temp[j][i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
-    u[j+1]=temp[j].transpose()	
+      temp[i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
+    u[j+1]=temp.transpose()	
   for i in range(0,d-1):
-    tr=dot(tr,u[i+1].transpose())
     s=size(tr)/r
     tr=tr.reshape(s,r,order='F')
+    tr=dot(tr,u[i+1].transpose())
   tr=tr.reshape(dimension,order='F')
   return tr
-
 
 def rights(a,u,dimension,d,r,k):
   f=zeros((dimension[k],r))
@@ -54,9 +54,9 @@ d3=2
 d4=2
 d5=2
 #dimension=[d1,d2,d3]
-d=5
-dimension=[4,2,4,4,4]
-r=2
+d=3
+dimension=[128,128,128]
+r=3
 
 
 a1,u0=randomtensor(r,dimension,size(dimension))
