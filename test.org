@@ -1,0 +1,58 @@
+#+STARTUP: overview
+#+STARTUP: hidestars
+#+OPTIONS: LaTeX:t
+#+OPTIONS: toc:nil
+#+LaTeX_CLASS: per-file-class
+#+TITLE: Каноническая аппроксимация тензоров и ее реализация на Python
+#+AUTHOR: Кузнецов М.А.
+#+DATE: 
+* LATEX OPTIONS 						   :noexport:
+#+OPTIONS: toc:nil
+** Packages
+#+LATEX_HEADER: \usepackage[T2A]{fontenc}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[english,russian]{babel}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{amsfonts,amsmath,amssymb}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{algorithmic} \usepackage[ruled]{algorithm}
+#+LATEX_HEADER: \usepackage[unicode=true,plainpages=false]{hyperref}
+#+LATEX_HEADER: \hypersetup{colorlinks=true,linkcolor=magenta,anchorcolor=magenta,urlcolor=blue,citecolor=blue}
+** User-defined symbols
+#+LATEX_HEADER: \def\A{\mathbf{A}}
+#+LATEX_HEADER: \def\V{\mathbf{V}}
+#+LATEX_HEADER: \def\B{\mathbf{B}}
+#+LATEX_HEADER: \def\C{\mathbf{C}}
+** GeometryTEX_HEADER: \usepackage[a4paper]{geometry}
+
+
+
+
+   
+
+ 
+   
+* Введение
+     
+  Аппроксимация многомерных массивов играет важную роль в приложениях. Однако вместо заданного многомерного массива
+часто нужно пользоваться его приближением, свойства которого известны, возможно. в отличие от заданного.
+Такие аппроксимации удобно строить используя следующее представление многомерного массива (/тензора/)
+
+ /Определение/
+  
+ Тензором A размерности $d$ назовем многомерный массив, элементы которого A(i_1,i_2,\ldots,i_d) имеют $d$ 
+индексов.
+
+ /Определение/
+
+ Каноническим разложением многомерного массива (/тензора/) 
+называется представление вида 
+
+\begin{equation}\label{curs:eq1}
+A(i_1,i_2,\ldots,i_d) = \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha),
+\end{equation}
+где U_k называются /факторами/ канонического разложения, а $r$ --- каноническим рангом.
+
+Уравнение \eqref{curs:eq1} является основным.
+
+
