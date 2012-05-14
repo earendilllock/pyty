@@ -3,7 +3,7 @@ from numpy.linalg import *
 from pylab import *
 from time import *
 from test import *
-    
+
 d=3
 d1=2
 d2=2
@@ -21,26 +21,10 @@ r=5
 #    	a1[i,j,k]=1.0/(i+j+k+1)
 
 
-a1,u0=randomtensor(r,dimension,size(dimension))
-norma=norm(a1)
-nrm=norma
-no=[nrm]
-a=a1.copy()
-u=list(arange(d))
-for i in xrange(0,d):
-    u[i]=randn(dimension[i],r)
+a,u0=randomtensor(r,dimension,size(dimension))
+
 eps=1e-6
 t=time()
-while(norma>eps*nrm):
-    for i in xrange(0,d):
-        y=rights(a,u,dimension,d,r,i)
-        l=lefts(u,i,d,r)
-        u[i]=solve(l,y.transpose()).transpose()
-    a1=gettensor(u,r,dimension,d)
-    norma=norm(a1-a)
-    no=no+[norma]
-    
-#    print('norma nevyazki',norma)
+a1,u,no=ALSproc(a,d,r,dimension,eps)
 t=time()-t
-plot(no)
-show()  
+
