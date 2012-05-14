@@ -1,7 +1,7 @@
 from numpy import *
 from numpy.linalg import *
 from pylab import *
-
+from time import *
 
 def randomtensor(r,dimension,d):
   u=list(arange(d))
@@ -75,8 +75,8 @@ d4=2
 d5=2
 #dimension=[d1,d2,d3]
 d=3
-dimension=[32,32,32]
-r=100
+dimension=[500,500,500]
+r=5
 #a1=zeros(dimension)
 #for i in xrange(0,dimension[0]):
 #  for j in xrange(0,dimension[1]):
@@ -93,6 +93,7 @@ u=list(arange(d))
 for i in xrange(0,d):
     u[i]=randn(dimension[i],r)
 eps=1e-6
+t=time()
 while(norma>eps*nrm):
     for i in xrange(0,d):
         y=rights(a,u,dimension,d,r,i)
@@ -102,4 +103,4 @@ while(norma>eps*nrm):
     norma=norm(a1-a)
     no=no+[norma]
     print('norma nevyazki',norma)
-  
+t=time()-t  
