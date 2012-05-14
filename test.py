@@ -66,3 +66,24 @@ def lefts(u,k,d,r):
       m=m*dot(u[i].transpose(),u[i])
   return m
     
+def ALSproc(a,d,r,dimension,eps):
+  a1=a.copy()
+  norma=norm(a1)
+  nrm=norma
+  no=[nrm]
+  
+  u=list(arange(d))
+  for i in xrange(0,d):
+    u[i]=randn(dimension[i],r)
+  eps=1e-6
+
+  while(norma>eps*nrm):
+    for i in xrange(0,d):
+      y=rights(a,u,dimension,d,r,i)
+      l=lefts(u,i,d,r)
+      u[i]=solve(l,y.transpose()).transpose()
+    a1=gettensor(u,r,dimension,d)
+    norma=norm(a1-a)
+    no=no+[norma]
+  return a1,u,no         
+
