@@ -55,4 +55,7 @@ A(i_1,i_2,\ldots,i_d) = \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots
 
 Уравнение \eqref{curs:eq1} является основным.
 
+#+name: pic1
+#+attr_latex: width=8cm centering
+[[file:RandTr25.png]]
 
