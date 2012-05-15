@@ -103,7 +103,7 @@ print("[[%s]]" % fname0)
 на всем протяжении времени работы алгоритма. Однако миновав локальный минимум, метод сошелся очень быстро.
 #+attr_latex: width=8cm
 #+name: pic1
-#+begin_src python 
+#+begin_src python :exports none
 from test import *
 from numpy import *
 from pylab import *
@@ -122,7 +122,7 @@ show()
 [[file:/home/earendilllock/pyty/RandomTensorr10.pdf]]
 - Для случайного тензора ранга $r$ = 25
 #+attr_latex: width=8cm
-#+begin_src python 
+#+begin_src python :exports none
 from test import *
 from numpy import *
 from pylab import *
@@ -142,7 +142,7 @@ show()
 - Для случайного тензора ранга $r$ = 100
 #+attr_latex: width=8cm
 #+name: pic1
-#+begin_src python 
+#+begin_src python :exports none
 from test import *
 from numpy import *
 from pylab import *
@@ -169,7 +169,7 @@ show()
 
 #+attr_latex: width=8cm
 #+name: "Ранг" 
-#+begin_src python 
+#+begin_src python :exports none
 from test import *
 from numpy import *
 from pylab import *
