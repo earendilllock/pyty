@@ -74,8 +74,8 @@ F=\sum_{i,j,k=1} (A_{ijk}-\sum_{\alpha=1}^r U_{i\alpha}V_{j\alpha}W_{k\alpha})^2
 Найдем частную производную функционала F по U_{\hat i\hat\alpha} и приравняем ее к 0:
 \begin{equation*}
 \frac{\partial F}{\partial U_{\hat i \hat \alpha}} = 
-2 \sum_{i,j,k}(A_{ijk}-\sum_{\alpha} U_{i\alpha}V_{j\alpha}W_{k\alpha})-
-\sum_{\check \alpha} V_{j\check \alpha}W_{k\check \alpha} =0.
+2 \sum_{\hat i,j,k}(A_{\hat ijk}-\sum_{\alpha} U_{\hat i \hat \alpha}V_{j\alpha}W_{k\alpha})(-
+\sum_{\hat \alpha} V_{j\hat \alpha}W_{k\hat \alpha}) =0.
 \end{equation*}
 Отсюда,
 \begin{equation*}
@@ -114,14 +114,23 @@ V_{j\hat \alpha}) (\sum_{k}W_{k\alpha}W_{k\hat \alpha}),
 \end{equation}
 или в виде системы линейных уравнений
 
-\begin{equation*}
+\begin{equation}\label{curs:q5}
 U M = F,
 \end{equation}
 где $M \in \mathbb{R}^{r \times r}$. 
 
+Путем циклических перестановок аналогичные соотношения получаем для V,с построенной 
+матрицей U,и W, с построенными матрицами U,V. 
 
+Продолжая применять алгоритм, можно добиться искомой точности аппроксимации заданного тензора.
 
 * Реализация на Python
+** Особенности реализации на Python
+Написание алгоритма на Python требует реализации функций вычисляющих правую
+и левую часть системы \eqref{curs:q5}, с чем связаны определенные трудности. Наиболее 
+привычным методом реализации математической операции \sum является цикл for, однако
+язык Python 
+Наиболее сложной для вычисления операции, является пересчет правой части системы \eqref{curs:q5}.
 ** Критерий остановки 
 * Численные эксперименты
  В данном параграфе будут изложены в графическом виде результаты работы программы, реализующей метод ALS. 
