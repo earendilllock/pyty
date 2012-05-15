@@ -23,15 +23,8 @@
 #+LATEX_HEADER: \def\V{\mathbf{V}}
 #+LATEX_HEADER: \def\B{\mathbf{B}}
 #+LATEX_HEADER: \def\C{\mathbf{C}}
-** GeometryTEX_HEADER: \usepackage[a4paper]{geometry}
-
-
-
-
-   
-
- 
-   
+** Geometry
+#+LATEX_HEADER: \usepackage[left=2.5cm,top=2cm,right=2cm,bottom=2cm,a4paper]{geometry}
 * Введение
      
   Аппроксимация многомерных массивов играет важную роль в приложениях. Однако вместо заданного многомерного массива
@@ -56,78 +49,76 @@ A(i_1,i_2,\ldots,i_d) = \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots
 Уравнение \eqref{curs:eq1} является основным.
 
 * Описание метода ALS
-  Пусть задан тензор A_i,_j,_k , требуется приблизить его с помощью матриц 
-U,V,W, таким образом:
+  Пусть задан тензор $A$ с элементами A_{ijk}. Задача состоит в том, чтобы найти его
+  каноническое приближение, а именно найти такие матрицы $U_1,\ldots,U_d$
 
-\begin{equation}
-A_{i_1,\ldots,i_d} \approx  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha),
+\begin{equation}\label{curs:caneq}
+A_{i_1,\ldots,i_d} \approx  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha).
 \end{equation}
-
-это выражение можно понимать в смысле наименьших квадратов
-\begin{equation}
-\parallel A_{i_1},_{\ldots},_{i_d}  -  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha), \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha) \parallel ^2 =
- 
-\sum_{i_1,\ldots,i_d} (A_{i_1},_{\ldots},_{i_d} - \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha))^2
-\longrightarrow min
-\end{equation}
-
+Математическая постановка задачи состоит в том, чтобы поставить задачу
+\eqref{curs:caneq} в смысле наименьших квадратов
+#+begin_latex
+\begin{align}
+\sum_{i_1,\ldots,i_d} \Big(A(i_1,\ldots,i_d)-
+\sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots
+U_d(i_d,\alpha)\Big) ^2
+\longrightarrow \min.
+\end{align}
+#+end_latex
 Для упрощения рассчетных формул проведем построение метода отыскания минимума
-для тензора размерности 3 (в $d$ -мерном случае рассуждения аналогичны)
-
+для тензора размерности 3 (в $d$ -мерном случае рассуждения аналогичны).
 Введем функционал F,
 \begin{equation}
-F=\sum_{i,j,k=1} (A_{i,j,k}-\sum_{\alpha=1}^r U_{i,\alpha}V_{j,\alpha}W_{k,\alpha})^2
+F=\sum_{i,j,k=1} (A_{ijk}-\sum_{\alpha=1}^r U_{i\alpha}V_{j\alpha}W_{k\alpha})^2.
 \end{equation}
-
-найдем частную производную функционала F по U_{\hat x, \hat \alpha} и приравняем его к 0
+Найдем частную производную функционала F по U_{\hat i\hat\alpha} и приравняем ее к 0:
 \begin{equation*}
-\frac{\partial F}{\partial U_{\hat x, \hat \alpha}} = 
-2 \sum_{i,j,k}(A_{i,j,k}-\sum_{\alpha} U_{i,\alpha}V_{j,\alpha}W_{k,\alpha})-
-\sum_{\check \alpha} V_{j,\check \alpha}W_{k,\check \alpha} =0
+\frac{\partial F}{\partial U_{\hat i \hat \alpha}} = 
+2 \sum_{i,j,k}(A_{ijk}-\sum_{\alpha} U_{i\alpha}V_{j\alpha}W_{k\alpha})-
+\sum_{\check \alpha} V_{j\check \alpha}W_{k\check \alpha} =0.
 \end{equation*}
-
+Отсюда,
 \begin{equation*}
--\sum_{i,j,k,\check \alpha} A_{i,j,k} \delta_{i,\hat i} \delta_{\check\alpha, \hat\alpha}
-V_{j,\check \alpha}W_{k,\check \alpha} +
-\sum_{i,j,k,\alpha,\check \alpha} U_{i,\alpha}V_{j,\alpha}
-\delta_{i,\hat i}\delta_{\check \alpha,\hat \alpha}
-V_{j,\check \alpha}W_{k,\check \alpha}
+-\sum_{i,j,k,\check \alpha} A_{ijk} \delta_{i\hat i} \delta_{\check\alpha \hat\alpha}
+V_{j\check \alpha}W_{k\check \alpha} +
+\sum_{i,j,k,\alpha,\check \alpha} U_{i\alpha}V_{j\alpha}
+\delta_{i\hat i}\delta_{\check \alpha\hat \alpha}
+V_{j,\check \alpha}W_{k\check \alpha}.
 \end{equation*}
-
+Окончательно, получаем следующие соотношения:
 \begin{equation*}
-\sum_{j,k} A_{\hat i,j,k}V_{j, \hat \alpha}W_{k,\hat \alpha}=
-\sum_{j,k,\alpha} U_{\hat i,\alpha}V_{j,\alpha}W_{k,\alpha}V_{j,\hat \alpha}
-W_{k,\hat \alpha}
+\sum_{j,k} A_{\hat ijk}V_{j \hat \alpha}W_{k\hat \alpha}=
+\sum_{j,k,\alpha} U_{\hat i\alpha}V_{j\alpha}W_{k\alpha}V_{j\hat \alpha}
+W_{k,\hat \alpha},
 \end{equation*}
-
+где
 \begin{equation*}
 \sum_{j,k,\alpha} U_{\hat i,\alpha}V_{j,\alpha}W_{k,\alpha}V_{j,\hat \alpha}
 W_{k,\hat \alpha}= \sum_{\alpha} U_{\hat i,\alpha}(\sum_{j}V_{j,\alpha}
-V_{j,\hat \alpha}) (\sum_{k}W_{k,\alpha}W_{k,\hat \alpha})
+V_{j,\hat \alpha}) (\sum_{k}W_{k,\alpha}W_{k,\hat \alpha}).
 \end{equation*}
-
-обозначим через M_{\alpha,\hat \alpha}
-
+Обозначим через M_{\alpha \hat \alpha}
+матрицу с элементами
 \begin{equation*}
 M_{\alpha,\hat \alpha} = (\sum_{j}V_{j,\alpha}
-V_{j,\hat \alpha}) (\sum_{k}W_{k,\alpha}W_{k,\hat \alpha}),
+V_{j\hat \alpha}) (\sum_{k}W_{k\alpha}W_{k\hat \alpha}),
 \end{equation*}
- 
 тогда
 \begin{equation*}
 \sum_{\alpha} U_{\hat i, \alpha}M_{\alpha,\hat \alpha} = 
-\sum_{j,k} A_{\hat i,j,k}V_{j, \hat \alpha}W_{k,\hat \alpha}
+\sum_{j,k} A_{\hat i,j,k}V_{j, \hat \alpha}W_{k,\hat \alpha}.
 \end{equation*}
-
-
-обозначим через F_{i,\hat \alpha} правую часть. Имеем:
-
-
+Через  F_{i,\hat \alpha} обозначим правую часть. Тогда, имеем
 \begin{equation}
-\sum_{\alpha} U_{\hat i, \alpha}M_{\alpha,\hat \alpha}=F_{i,\hat \alpha}
+\sum_{\alpha} U_{\hat i \alpha}M_{\alpha \hat \alpha}=F_{i \hat \alpha},
 \end{equation}
+или в виде системы линейных уравнений
 
-Где M \in 
+\begin{equation*}
+U M = F,
+\end{equation}
+где $M \in \mathbb{R}^{r \times r}$. 
+
 * Реализация на Python
 ** Критерий остановки 
 * Численные эксперименты
