@@ -55,6 +55,48 @@ A(i_1,i_2,\ldots,i_d) = \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots
 
 Уравнение \eqref{curs:eq1} является основным.
 
+* Описание метода ALS
+  Пусть задан тензор A_i,_j,_k , требуется приблизить его с помощью матриц 
+U,V,W, таким образом:
+
+\begin{equation}
+A_{i_1},_\ldots,_{i_d} \approx  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha),
+\end{equation}
+
+это выражение можно понимать в смысле наименьших квадратов
+\begin{equation}
+\parallel A_{i_1},_{\ldots},_{i_d}  -  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha), \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha) \parallel ^2 =
+ 
+\sum_{i_1,\ldots,i_d} (A_{i_1},_{\ldots},_{i_d} - \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha))^2
+\longrightarrow min
+\end{equation}
+
+Для упрощения рассчетных формул проведем построение метода отыскания минимума
+для тензора размерности 3 (в $d$ -мерном случае рассуждения аналогичны)
+
+Введем функционал F,
+\begin{equation}
+F=\sum_{i,j,k=1} (A_{i,j,k}-\sum_{\alpha=1}^r U_{i,\alpha}V_{j,\alpha}W_{k,\alpha})^2
+\end{equation}
+
+найдем частную производную функционала F по U_{\hat x, \hat \alpha} и приравняем его к 0
+\begin{equation}
+\frac{\partial F}{\partial U_{\hat x, \hat \alpha}} = 
+2 \sum_{i,j,k}(A_{i,j,k}-\sum_{\alpha} U_{i,\alpha}V_{j,\alpha}W_{k,\alpha})-
+\sum_{\check \alpha} V_{j,\check \alpha}W_{k,\check \alpha} =0
+
+-\sum_{i,j,k,\check \alpha} A_{i,j,k} \delta_{i,\hat i} \delta_{\check\alpha, \hat\alpha}
+V_{j,\check \alpha}W_{k,\check \alpha} +
+\sum_{i,j,k,\alpha,\check \alpha} U_{i,\alpha}V_{j,\alpha}
+\delta_{i,\hat i}\delta_{\check \alpha,\hat \alpha}
+V_{j,\check \alpha}W_{k,\check \alpha}
+
+\sum_{j,k} A_{\hat i,j,k}V_{j, \hat \alpha}W_{k,\hat \alpha}=
+\sum_{j,k,\alpha
+\end{equation}
+
+* Реализация на Python
+** Критерий остановки 
 * Численные эксперименты
  В данном параграфе будут изложены в графическом виде результаты работы программы, реализующей метод ALS. 
 В качестве входных данных подавались:
@@ -74,9 +116,9 @@ max|A(i_1,i_2,i_3)-Approximation(i_1,i_2,i_3)|
 ALS, реализованного на Python.
 
 Ниже приводятся графики поведения нормы невязки  в зависимости от числа итераций. 
+
 - Для случайного тензора ранга $r$ = 5
-#+attr_latex: width=8cm
-#+begin_src python :results output raw :exports results  
+#+begin_src python :exports results :results output raw
 from test import *
 from numpy import *
 from pylab import *
@@ -85,15 +127,20 @@ dimension=[32,32,32]
 r=5
 a,u0=randomtensor(r,dimension,size(dimension))
 eps=1e-6
-a1,u,no=ALSproc(a,d,r,dimension,eps)
+a1, u,no=ALSproc(a,d,r,dimension,eps)
 plot(no)
 xlabel('Iterations')
 ylabel('Norm')
 title('Graphic of norm')
 fname="rnd5.pdf"
 savefig(fname)
-print("[[%s]]" % fname0)
+#clf()
+print "[[file:%s]]" % fname
 #+end_src
+
+#+results:
+| file:rnd5.pdf |
+
 
 
 
@@ -103,7 +150,7 @@ print("[[%s]]" % fname0)
 на всем протяжении времени работы алгоритма. Однако миновав локальный минимум, метод сошелся очень быстро.
 #+attr_latex: width=8cm
 #+name: pic1
-#+begin_src python :exports none
+#+begin_src python :exports results :results output raw
 from test import *
 from numpy import *
 from pylab import *
@@ -117,12 +164,15 @@ plot(no)
 xlabel('Iterations')
 ylabel('Norm')
 title('Graphic of norm')
-show()
+fname="rnd10.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
 #+end_src
-[[file:/home/earendilllock/pyty/RandomTensorr10.pdf]]
+
 - Для случайного тензора ранга $r$ = 25
 #+attr_latex: width=8cm
-#+begin_src python :exports none
+#+begin_src python :exports results :results output raw
 from test import *
 from numpy import *
 from pylab import *
@@ -136,13 +186,15 @@ plot(no)
 xlabel('Iterations')
 ylabel('Norm')
 title('Graphic of norm')
-show()
+fname="rnd25.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
 #+end_src
-[[file:/home/earendilllock/pyty/RandTr25.png]]
+
 - Для случайного тензора ранга $r$ = 100
-#+attr_latex: width=8cm
-#+name: pic1
-#+begin_src python :exports none
+#+attr_latex: width=8cmn
+#+begin_src python :exports results :results output raw
 from test import *
 from numpy import *
 from pylab import *
@@ -156,9 +208,12 @@ plot(no)
 xlabel('Iterations')
 ylabel('Norm')
 title('Graphic of norm')
-show()
+fname="rnd100.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
 #+end_src
-[[file:/home/earendilllock/pyty/RandTr100.png]]
+
 
 Несмотря на то, что скорость убывания невязки может варьироваться в зависимости от ранга и начального приближения,
 невязка убывает монотонно.
@@ -169,7 +224,7 @@ show()
 
 #+attr_latex: width=8cm
 #+name: "Ранг" 
-#+begin_src python :exports none
+#+begin_src python :exports results :results output raw
 from test import *
 from numpy import *
 from pylab import *
@@ -189,13 +244,14 @@ plot(mar[1],mar[0])
 xlabel('rank')
 ylabel('time')
 title('Graphic of time')
-show()
+fname="rnd5.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
 #+end_src
 
 #+results:
 : None
-
-[[file:/home/earendilllock/pyty/timeotrang.png]]
 
 в ходе этого эксперимента размерности мод $dimension_i$ брались равными между собой и равными 32 а ранг 
 менялся $r$ = 2,3,5,10,25,50,100,500. Исходя из графика, можно сделать вывод, что время зависит от ранга 
@@ -205,10 +261,70 @@ show()
   Эта серия экспериментов проводилась с целью изучения зависимости времени выполнения программы от размерностей мод
 $dimension_i$ = 32,64,128,250,500 и ранге $r$ = 5.
 
+
 #+attr_latex: width=8cm
 #+name: "Ранг" 
-[[file:/home/earendilllock/pyty/timeotdim.png]]
+#+begin_src python :exports results :results output raw
+from test import *
+from numpy import *
+from pylab import *
+from time import *
+d=3
+tempor=[16,32,64,128,250,500]
 
-Судя по графику время выполнения программы пропорционально O(n^1^,^2)
+r=5
+mar=zeros((2,7))
+for i in xrange(0,7):
+  dimension=[tempor[i],tempor[i],tempor[i]]
+  t=time()
+  a,u0=randomtensor(r,dimension,size(dimension))
+  eps=1e-6
+  a1,u,no=ALSproc(a,d,r,dimension,eps)
+  mar[0,i]=time()-t
+  mar[1,i]=r[i]
+plot(mar[1],mar[0])
+xlabel('dimension')
+ylabel('time')
+title('Graphic of time')
+fname="rnd88.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
+#+end_src
 
+Судя по графику время выполнения программы пропорционально O(n^{1.2})
+
+** Эксперименты над неслучайными тензорами
+
+В ходе этой серии экспериментов на вход подавался тензор размерности $d$ = 3 вида:
+\begin{equation>}*
+A[i,j,k] = \frac{1}{i+j+k+1}  , i,j,k =1,2,\ldots, $dimension$ - 1
+\end{equation}
+
+#+begin_src python :exports results :results output raw :cashe yes
+from test import *
+from numpy import *
+from pylab import *
+d=3
+dimension=[32,32,32]
+r=5
+a=zeros(dimension)
+for i in xrange(0,dimension[0]):
+  for j in xrange(0,dimension[1]):
+    for k in xrange(0,dimension[2]):
+    	a[i,j,k]=1.0/(i+j+k+1)
+
+eps=1e-6
+a1, u,no=ALSproc(a,d,r,dimension,eps)
+plot(no)
+xlabel('Iterations')
+ylabel('Norm')
+title('Graphic of norm')
+fname="rnd5.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
+#+end_src
+
+#+results:
 
