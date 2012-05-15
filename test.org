@@ -79,19 +79,11 @@ F=\sum_{i,j,k=1} (A_{ijk}-\sum_{\alpha=1}^r U_{i\alpha}V_{j\alpha}W_{k\alpha})^2
 \end{equation*}
 Отсюда,
 \begin{equation*}
-<<<<<<< HEAD
--\sum_{i,j,k,\check \alpha} A_{i,j,k} \delta_{i,\hat i} \delta_{\check\alpha, \hat\alpha}
-V_{j,\check \alpha}W_{k,\check \alpha} +
-\sum_{i,j,k,\alpha,\check \alpha} U_{i,\alpha}V_{j,\alpha}
-\delta_{i,\hat i}\delta_{\check \alpha,\hat \alpha}
-V_{j,\check \alpha}W_{k,\check \alpha}=0
-=======
 -\sum_{i,j,k,\check \alpha} A_{ijk} \delta_{i\hat i} \delta_{\check\alpha \hat\alpha}
 V_{j\check \alpha}W_{k\check \alpha} +
 \sum_{i,j,k,\alpha,\check \alpha} U_{i\alpha}V_{j\alpha}
 \delta_{i\hat i}\delta_{\check \alpha\hat \alpha}
-V_{j,\check \alpha}W_{k\check \alpha}.
->>>>>>> b00dc70cd03cb928aebd12f7ff5be5e8d9eeea16
+V_{j,\check \alpha}W_{k\check \alpha}=0.
 \end{equation*}
 Окончательно, получаем следующие соотношения:
 \begin{equation*}
@@ -127,12 +119,8 @@ U M = F,
 \end{equation}
 где $M \in \mathbb{R}^{r \times r}$. 
 
-<<<<<<< HEAD
-Где M \in R^{$r$ \times $r$}, U_i \in R^{r \times 1}, f_i \in R^{r \times 1}
 
-Следователь
-=======
->>>>>>> b00dc70cd03cb928aebd12f7ff5be5e8d9eeea16
+
 * Реализация на Python
 ** Критерий остановки 
 * Численные эксперименты
