@@ -74,9 +74,15 @@ F=\sum_{i,j,k=1} (A_{ijk}-\sum_{\alpha=1}^r U_{i\alpha}V_{j\alpha}W_{k\alpha})^2
 Найдем частную производную функционала F по U_{\hat i\hat\alpha} и приравняем ее к 0:
 \begin{equation*}
 \frac{\partial F}{\partial U_{\hat i \hat \alpha}} = 
-2 \sum_{\hat i,j,k}(A_{\hat ijk}-\sum_{\alpha} U_{\hat i \hat \alpha}V_{j\alpha}W_{k\alpha})(-
-\sum_{\hat \alpha} V_{j\hat \alpha}W_{k\hat \alpha}) =0.
+2 \sum_{i,j,k}(A_{ijk}-\sum_{\alpha} U_{i \hat \alpha}V_{j\alpha}W_{k\alpha})(-
+\sum_{\check \alpha} V_{j\check \alpha}W_{k\check \alpha})
+\frac{\partial U_{i \check \alpha}}{\partial U_{\hat i \hat \alpha}} =0.
 \end{equation*}
+\begin{equation*}
+\frac{\partial U_{i \check \alpha}}{\partial U_{\hat i \hat \alpha}} =
+\delta_{i,\hat i}\delta_{\check \alpha \hat \alpha}
+\end{equation*}
+
 Отсюда,
 \begin{equation*}
 -\sum_{i,j,k,\check \alpha} A_{ijk} \delta_{i\hat i} \delta_{\check\alpha \hat\alpha}
@@ -136,6 +142,7 @@ U M = F,
 Левыя часть системы может быть вычислена по формуле:
 \begin{equation}
 (U_1
+\end{equation}
 Наиболее сложной для вычисления операции, является пересчет правой части системы \eqref{curs:q5}.
 ** Критерий остановки 
 * Численные эксперименты
