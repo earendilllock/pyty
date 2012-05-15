@@ -60,7 +60,7 @@ A(i_1,i_2,\ldots,i_d) = \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots
 U,V,W, таким образом:
 
 \begin{equation}
-A_{i_1},_\ldots,_{i_d} \approx  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha),
+A_{i_1,\ldots,i_d} \approx  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha),
 \end{equation}
 
 это выражение можно понимать в смысле наименьших квадратов
@@ -80,21 +80,54 @@ F=\sum_{i,j,k=1} (A_{i,j,k}-\sum_{\alpha=1}^r U_{i,\alpha}V_{j,\alpha}W_{k,\alph
 \end{equation}
 
 найдем частную производную функционала F по U_{\hat x, \hat \alpha} и приравняем его к 0
-\begin{equation}
+\begin{equation*}
 \frac{\partial F}{\partial U_{\hat x, \hat \alpha}} = 
 2 \sum_{i,j,k}(A_{i,j,k}-\sum_{\alpha} U_{i,\alpha}V_{j,\alpha}W_{k,\alpha})-
 \sum_{\check \alpha} V_{j,\check \alpha}W_{k,\check \alpha} =0
+\end{equation*}
 
+\begin{equation*}
 -\sum_{i,j,k,\check \alpha} A_{i,j,k} \delta_{i,\hat i} \delta_{\check\alpha, \hat\alpha}
 V_{j,\check \alpha}W_{k,\check \alpha} +
 \sum_{i,j,k,\alpha,\check \alpha} U_{i,\alpha}V_{j,\alpha}
 \delta_{i,\hat i}\delta_{\check \alpha,\hat \alpha}
 V_{j,\check \alpha}W_{k,\check \alpha}
+\end{equation*}
 
+\begin{equation*}
 \sum_{j,k} A_{\hat i,j,k}V_{j, \hat \alpha}W_{k,\hat \alpha}=
-\sum_{j,k,\alpha
+\sum_{j,k,\alpha} U_{\hat i,\alpha}V_{j,\alpha}W_{k,\alpha}V_{j,\hat \alpha}
+W_{k,\hat \alpha}
+\end{equation*}
+
+\begin{equation*}
+\sum_{j,k,\alpha} U_{\hat i,\alpha}V_{j,\alpha}W_{k,\alpha}V_{j,\hat \alpha}
+W_{k,\hat \alpha}= \sum_{\alpha} U_{\hat i,\alpha}(\sum_{j}V_{j,\alpha}
+V_{j,\hat \alpha}) (\sum_{k}W_{k,\alpha}W_{k,\hat \alpha})
+\end{equation*}
+
+обозначим через M_{\alpha,\hat \alpha}
+
+\begin{equation*}
+M_{\alpha,\hat \alpha} = (\sum_{j}V_{j,\alpha}
+V_{j,\hat \alpha}) (\sum_{k}W_{k,\alpha}W_{k,\hat \alpha}),
+\end{equation*}
+ 
+тогда
+\begin{equation*}
+\sum_{\alpha} U_{\hat i, \alpha}M_{\alpha,\hat \alpha} = 
+\sum_{j,k} A_{\hat i,j,k}V_{j, \hat \alpha}W_{k,\hat \alpha}
+\end{equation*}
+
+
+обозначим через F_{i,\hat \alpha} правую часть. Имеем:
+
+
+\begin{equation}
+\sum_{\alpha} U_{\hat i, \alpha}M_{\alpha,\hat \alpha}=F_{i,\hat \alpha}
 \end{equation}
 
+Где M \in 
 * Реализация на Python
 ** Критерий остановки 
 * Численные эксперименты
