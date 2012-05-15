@@ -73,10 +73,29 @@ max|A(i_1,i_2,i_3)-Approximation(i_1,i_2,i_3)|
 где Approximation(i_1,i_2,i_3) --- аппроксимация заданного тензора, построенная с помощью алгоритма
 ALS, реализованного на Python.
 
-Ниже приводятся графики поведения нормы невязки (\eq2) в зависимости от числа итераций. 
+Ниже приводятся графики поведения нормы невязки  в зависимости от числа итераций. 
 - Для случайного тензора ранга $r$ = 5
 #+attr_latex: width=8cm
-[[file:/home/earendilllock/pyty/RandTr5.png]]
+#+begin_src python :results output raw :exports results  
+from test import *
+from numpy import *
+from pylab import *
+d=3
+dimension=[32,32,32]
+r=5
+a,u0=randomtensor(r,dimension,size(dimension))
+eps=1e-6
+a1,u,no=ALSproc(a,d,r,dimension,eps)
+plot(no)
+xlabel('Iterations')
+ylabel('Norm')
+title('Graphic of norm')
+fname="rnd5.pdf"
+savefig(fname)
+print("[[%s]]" % fname0)
+#+end_src
+
+
 
 - Для случайного тензора ранга $r$ = 10
 
@@ -84,13 +103,61 @@ ALS, реализованного на Python.
 на всем протяжении времени работы алгоритма. Однако миновав локальный минимум, метод сошелся очень быстро.
 #+attr_latex: width=8cm
 #+name: pic1
+#+begin_src python 
+from test import *
+from numpy import *
+from pylab import *
+d=3
+dimension=[32,32,32]
+r=10
+a,u0=randomtensor(r,dimension,size(dimension))
+eps=1e-6
+a1,u,no=ALSproc(a,d,r,dimension,eps)
+plot(no)
+xlabel('Iterations')
+ylabel('Norm')
+title('Graphic of norm')
+show()
+#+end_src
 [[file:/home/earendilllock/pyty/RandomTensorr10.pdf]]
 - Для случайного тензора ранга $r$ = 25
 #+attr_latex: width=8cm
+#+begin_src python 
+from test import *
+from numpy import *
+from pylab import *
+d=3
+dimension=[32,32,32]
+r=25
+a,u0=randomtensor(r,dimension,size(dimension))
+eps=1e-6
+a1,u,no=ALSproc(a,d,r,dimension,eps)
+plot(no)
+xlabel('Iterations')
+ylabel('Norm')
+title('Graphic of norm')
+show()
+#+end_src
 [[file:/home/earendilllock/pyty/RandTr25.png]]
 - Для случайного тензора ранга $r$ = 100
 #+attr_latex: width=8cm
 #+name: pic1
+#+begin_src python 
+from test import *
+from numpy import *
+from pylab import *
+d=3
+dimension=[32,32,32]
+r=100
+a,u0=randomtensor(r,dimension,size(dimension))
+eps=1e-6
+a1,u,no=ALSproc(a,d,r,dimension,eps)
+plot(no)
+xlabel('Iterations')
+ylabel('Norm')
+title('Graphic of norm')
+show()
+#+end_src
 [[file:/home/earendilllock/pyty/RandTr100.png]]
 
 Несмотря на то, что скорость убывания невязки может варьироваться в зависимости от ранга и начального приближения,
@@ -102,6 +169,32 @@ ALS, реализованного на Python.
 
 #+attr_latex: width=8cm
 #+name: "Ранг" 
+#+begin_src python 
+from test import *
+from numpy import *
+from pylab import *
+from time import *
+d=3
+dimension=[32,32,32]
+r=[2,3,5,10,20,50,100]
+mar=zeros((2,7))
+for i in xrange(0,7):
+  t=time()
+  a,u0=randomtensor(r[i],dimension,size(dimension))
+  eps=1e-6
+  a1,u,no=ALSproc(a,d,r[i],dimension,eps)
+  mar[0,i]=time()-t
+  mar[1,i]=r[i]
+plot(mar[1],mar[0])
+xlabel('rank')
+ylabel('time')
+title('Graphic of time')
+show()
+#+end_src
+
+#+results:
+: None
+
 [[file:/home/earendilllock/pyty/timeotrang.png]]
 
 в ходе этого эксперимента размерности мод $dimension_i$ брались равными между собой и равными 32 а ранг 

@@ -4,13 +4,7 @@ from pylab import *
 from time import *
 from test import *
 
-d=3
-d1=2
-d2=2
-d3=2
-d4=2
-d5=2
-#dimension=[d1,d2,d3]
+
 d=3
 dimension=[32,32,32]
 r=5
