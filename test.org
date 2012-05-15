@@ -91,7 +91,7 @@ F=\sum_{i,j,k=1} (A_{i,j,k}-\sum_{\alpha=1}^r U_{i,\alpha}V_{j,\alpha}W_{k,\alph
 V_{j,\check \alpha}W_{k,\check \alpha} +
 \sum_{i,j,k,\alpha,\check \alpha} U_{i,\alpha}V_{j,\alpha}
 \delta_{i,\hat i}\delta_{\check \alpha,\hat \alpha}
-V_{j,\check \alpha}W_{k,\check \alpha}
+V_{j,\check \alpha}W_{k,\check \alpha}=0
 \end{equation*}
 
 \begin{equation*}
@@ -127,7 +127,9 @@ V_{j,\hat \alpha}) (\sum_{k}W_{k,\alpha}W_{k,\hat \alpha}),
 \sum_{\alpha} U_{\hat i, \alpha}M_{\alpha,\hat \alpha}=F_{i,\hat \alpha}
 \end{equation}
 
-Где M \in 
+Где M \in R^{$r$ \times $r$}, U_i \in R^{r \times 1}, f_i \in R^{r \times 1}
+
+Следователь
 * Реализация на Python
 ** Критерий остановки 
 * Численные эксперименты
