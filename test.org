@@ -447,6 +447,8 @@ savefig(fname)
 print "[[file:%s]]" % fname
 #+end_src
 
+[[file:rnd10.pdf]]
+
 - Для случайного тензора ранга $r$ = 25
 #+attr_latex: width=8cm
 #+begin_src python :exports results :results output raw :cashe yes
@@ -468,6 +470,7 @@ savefig(fname)
 #clf()
 print "[[file:%s]]" % fname
 #+end_src
+[[file:rnd25.pdf]]
 
 - Для случайного тензора ранга $r$ = 100
 #+attr_latex: width=8cm
@@ -491,6 +494,7 @@ savefig(fname)
 print "[[file:%s]]" % fname
 #+end_src
 
+[[file:rnd100.pdf]]
 
 Несмотря на то, что скорость убывания невязки может варьироваться в зависимости от ранга и начального приближения,
 невязка убывает монотонно.
@@ -527,42 +531,31 @@ print "[[file:%s]]" % fname
 #+end_src
 
 в ходе этого эксперимента размерности мод $dimension_i$ брались равными между собой и равными 32 а ранг 
-менялся $r$ = 2,3,5,10,25,50,100,500. Исходя из графика, можно сделать вывод, что время зависит от ранга 
+менялся $r$ = 2,3,5,10,25,50,100. Исходя из графика, можно сделать вывод, что время зависит от ранга 
 как O(r)
   
 - размерностей тензора $n_i$ (i = 1,2,3) при фиксированном ранге
 
-  Эта серия экспериментов проводилась с целью изучения зависимости времени выполнения программы от размерностей мод $n_i$ = 32,64,128,250,500 и ранге $r$ = 5.
-
+Эта серия экспериментов проводилась с целью изучения зависимости времени выполнения программы от размерностей мод $n_i$ = 32,64,128,250,500 и ранге $r$ = 5.
 
 #+attr_latex: width=8cm 
-#+begin_src python :exports results :results output raw
-from test import *
-from numpy import *
-from pylab import *
-from time import *
-d=3
-tempor=[16,32,64,128,250]
+[[file:totr.pdf]]
 
-r=5
-mar=zeros((2,5))
-for i in xrange(0,5):
-  dimension=[tempor[i],tempor[i],tempor[i]]
-  t=time()
-  a,u0=randomtensor(r,dimension,size(dimension))
-  eps=1e-6
-  a1,u,no=ALSproc(a,d,r,dimension,eps)
-  mar[0,i]=time()-t
-  mar[1,i]=tempor[i]
-plot(mar[1],mar[0])
-xlabel('dimension')
-ylabel('time')
-title('Graphic of time')
-fname="rnd88.pdf"
-savefig(fname)
-#clf()
-print "[[file:%s]]" % fname
-#+end_src
+Логичным является проверить зависимость времени выполнения программы от различных
+размерностей мод. В данном эксперименте $dimension_i$ брались равными: 16, 32, 64, 128, 250,
+--- а ранг $r$ равным 5. Получена следующая зависимость:
+
+#+attr_latex: width=8cm
+[[file:timeotdimenss.pdf]]
+
+Построим сравнительный график убывания невязки при разных размерностях тензора $d$=3,4,5
+#+attr_latex: width=8cm
+[[file:zav.pdf]]
+
+И зависмость времени выполнения программы от размерности тензора $d$
+
+#+attr_latex: width=8cm
+[[file:totd.pdf]]
 
 ** Эксперименты над неслучайными тензорами
 
