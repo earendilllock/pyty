@@ -354,15 +354,101 @@ size(a.take([i],axis=k))/size(u[j][:,alf]),order='F'))
 ** Функция вычисления левой части (lefts)
 Левaя часть системы \eqref{curs:q5} может быть вычислена по формуле:
 \begin{equation}
-(U_1^T U_1)*(U_2^T U_2)*\dots*(U_d^T U_d),
+(U_1^T U_1)\circ(U_2^T U_2)\circ\dots\circ(U_d^T U_d),
 \end{equation}
-где под символом '*' подразумевается поэлементное произведение, а в скобках матричное.
+где под символом '\circ' подразумевается поэлементное произведение, а в скобках матричное.
 Обе эти операции реализованы с помощью стандартных функций Python.
 
-Прототип функции lefts имеет вид:
+Реализация на Python такова:
+#+begin_src python :exports code
+def lefts(u,k,d,r):
+  m=ones((r))
+  for i in range(0,d):
+    if (i<>k):
+      
+      m=m*dot(u[i].transpose(),u[i])
+  return m
+#+end_src
+Входные данные: u --- список факторов, k--- номер вычисляемого фактора, d --- размерность тензора, r--- ранг.
+Выходные данные: m --- левая часть системы.
+** Функция получения случайного тензора 
+\begin{equation}\label{curs:caneq}
+A_{i_1,\ldots,i_d} =  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha).
+\end{equation}
+для получения здесь матрично матричных перемножений применим хитрость:
+\begin{equation}\label{curs:caneq1}
+A_{i_1,\ldots,i_d} =  \sum_{\alpha=1}^r U_1(i_1,\alpha) U_2(i_2,\alpha) \ldots U_d(i_d,\alpha)=
+\sum_{\alpha_1}^r U_1(i_1,\alpha_1)\delta(\alpha_1,\alpha_2)\sum_{\alpha_2}^r U_2(i_2,\alpha_2)\ldots
+\sum_{\alpha_d}^r U_d(i_d,\alpha_d);
+\end{equation}
+в итоге получим:
+\begin{equation*}
+A=U_1\hat U_2 \ldots \hat U_{d-1} U_d;
+\end{equation*}
 
-lefts(U_1 \ldots U_d,iteration,dimension,rank)
+где $\hat U_j$ имеет вид:
 
+\left(
+\begin{matrix}
+U_{j}(1) &0&0& \ldots &0\\
+0& U_{j}(2)&0& \ldots&0\\
+&&\ldots&&&\\
+0&\ldots&0&0&U_{j}(r)\\
+\end{matrix}
+\right);
+
+$U_j(k)$ --- столбец матрицы $U_j$, $j=2,\ldots,d-1$, $k=1,\ldots,r$.
+$\hat U_j \in \matbb{R}^{r,rn}$
+
+Код процедуры:
+#+begin_src python :exports code
+def randomtensor(r,dimension,d):
+  u=list(arange(d))
+  for i in range(0,d):
+    u[i]=randn(dimension[i],r)
+  u0=[x.copy() for x in u]
+  s=1
+  tr=u[0]
+  temp=list(arange(d-2))
+  for j in range(0,d-2):
+    temp=zeros((r,r*dimension[j+1]))
+    for i in range(0,r):
+      temp[i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
+    u[j+1]=temp.transpose()
+  for i in range(0,d-1):
+    s=size(tr)/r
+    tr=tr.reshape(s,r,order='F')
+    tr=dot(tr,u[i+1].transpose())
+  tr=tr.reshape(dimension,order='F')
+  return tr,u0
+#+end_src
+Входные данные: ранг, размеры мод, размерность тензора
+Выходные данные: построенный тензор, факторы тензорного разложения.
+
+** Функиця получения тензора по заданным факторам
+Идея преобразований аналогична изложенной в предыдущем пункте, поэтому ограничимся только 
+предоставлением реализации:
+#+begin_src python :exports  code
+def gettensor(u1,r,dimension,d):
+  u=[x.copy() for x in u1]
+  s=1
+  tr=u[0]
+  temp=list(arange(d-2))
+  for j in range(0,d-2):
+    temp=zeros((r,r*dimension[j+1]))
+    for i in range(0,r):
+      temp[i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
+    u[j+1]=temp.transpose()
+  for i in range(0,d-1):
+    s=size(tr)/r
+    tr=tr.reshape(s,r,order='F')
+    tr=dot(tr,u[i+1].transpose())
+  tr=tr.reshape(dimension,order='F')
+  return tr
+
+#+end_src
+Входные данные: факторы, ранг, размерности мод, размерность тензора.
+Выходные данные: построенный тензор.
 ** Критерий остановки 
 Критерием остановки случат несколько параметров:
 1) $||A-\hat A||_2 < \varepsilon$ где $A$ --- заданный тензор, $\hat A$ --- аппроксимация. Точность \varepsilon задается пользователем.
