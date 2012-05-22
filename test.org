@@ -504,7 +504,7 @@ print "[[file:%s]]" % fname
  
 
 #+attr_latex: width=8cm
-#+begin_src python :exports results :results output raw
+#+begin_src python :exports none :results none
 from test import *
 from numpy import *
 from pylab import *
@@ -544,7 +544,33 @@ print "[[file:%s]]" % fname
 Логичным является проверить зависимость времени выполнения программы от различных
 размерностей мод. В данном эксперименте $dimension_i$ брались равными: 16, 32, 64, 128, 250,
 --- а ранг $r$ равным 5. Получена следующая зависимость:
+#+begin_src python :exports none :results none
+from test import *
+from numpy import *
+from pylab import *
+from time import *
+d=3
+tempor=[16,32,64,128,250]
 
+r=5
+mar=zeros((2,5))
+for i in xrange(0,5):
+  dimension=[tempor[i],tempor[i],tempor[i]]
+  t=time()
+  a,u0=randomtensor(r,dimension,size(dimension))
+  eps=1e-6
+  a1,u,no=ALSproc(a,d,r,dimension,eps)
+  mar[0,i]=time()-t
+  mar[1,i]=tempor[i]
+plot(mar[1],mar[0])
+xlabel('dimension')
+ylabel('time')
+title('Graphic of time')
+fname="rnd88.pdf"
+savefig(fname)
+#clf()
+print "[[file:%s]]" % fname
+#+end_src
 #+attr_latex: width=8cm
 [[file:timeotdimenss.pdf]]
 
@@ -564,7 +590,8 @@ print "[[file:%s]]" % fname
 A[i,j,k] = \frac{1}{i+j+k+1}  ,   i,j,k =1,2,\ldots,n - 1
 \end{equation*}
 
-#+begin_src python :exports results :results output raw :cashe yes
+График убывания невязки выглядит следующим образом:
+#+begin_src python :exports none :results none
 from test import *
 from numpy import *
 from pylab import *
@@ -588,6 +615,14 @@ savefig(fname)
 #clf()
 print "[[file:%s]]" % fname
 #+end_src
+#+attr_latex: width=8cm
+[[file:nonrnd5.pdf]]
 
-#+results:
+Метод сошелся за 35000 итераций, однако большую часть времени он находился в области 
+локального минимума, а невязка быстро убывала только в начале. Увеличенный график приводится ниже:
 
+#+attr_latex: width=8cm
+[[file:nooo.pdf]]
+
+Проследим изменение скорости убывания невязки при изменении ранга.
+$r = 5,20,37$
