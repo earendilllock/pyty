@@ -1,0 +1,177 @@
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+STARTUP: overview
+#+STARTUP: hidestars
+#+LaTeX_CLASS_OPTIONS: [presentation]
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %4BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+BEAMER_HEADER_EXTRA \beamerdefaultoverlayspecification{<+->}
+
+
+#+TITLE: И еще раз о задаче :)
+#+AUTHOR: Оселедец И.В.
+#+DATE: 2 мая 2012
+* LATEX OPTIONS 						   :noexport:
+#+OPTIONS: toc:nil
+** Packages
+#+LATEX_HEADER: \usepackage[english,russian]{babel}
+#+LATEX_HEADER: \usepackage{mathtools}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{algorithmic} \usepackage[ruled]{algorithm}
+#+LATEX_HEADER: \usetheme{Warsaw}
+#+LATEX_HEADER: \usepackage{concrete}
+#+LaTeX_HEADER: \usepackage{minted}
+#+LaTeX_HEADER: \usemintedstyle{emacs}
+#+LATEX_HEADER: \centering
+
+** User-defined symbols
+#+LATEX_HEADER: \def\A{\mathbf{A}}
+#+LATEX_HEADER: \def\V{\mathbf{V}}
+#+LATEX_HEADER: \def\B{\mathbf{B}}
+#+LATEX_HEADER: \def\C{\mathbf{C}}
+** HTML export
+#+MATHJAX: align:"left" mathml:t path:"http://orgmode.org/mathjax/MathJax.js"
+
+
+* Tasks 							   :noexport:
+** TODO Сделать набросок слайдов
+   
+
+* Задача
+** Напоминание (1)
+*** Слайд 1							     :B_only:
+    :PROPERTIES:
+    :BEAMER_env: only
+    :BEAMER_envargs: <1-2>
+    :END:
+Основная модель в сжатии данных --- представление вида
+
+$$ y = D x,$$
+где $y$ --- некоторый сигнал (вектор), $D$ --- известный (заданный)
+базис, а $x$ --- сигнал, который является разреженным.
+
+\vskip 2mm
+*** Слайд 2							     :B_only:
+    :PROPERTIES:
+    :BEAMER_env: only
+    :BEAMER_envargs: <2>
+    :END:
+
+Возможные подходы:
+
+- Дискретное преобразование Фурье (для изображений)
+- Дискретное вейвлет-преобразование
+- \alert{Построение специальных базисов}
+
+
+** Напоминание (2)
+Задача ``наиболее разреженного'' представления:
+
+- \min ||x||_0, \mbox{при ограничении }  y = Dx,
+  \vskip 2mm
+- \min ||x||_0, \mbox{при ограничении }  || y - D x ||_2 \leq
+\varepsilon
+
+где $||\cdot||_0$ --- число ненулей в векторе. 
+
+** Напоминание (3) 
+*** VQ								     :B_only:
+    :PROPERTIES:
+    :BEAMER_env: only
+    :BEAMER_envargs: <1-2>
+    :END:
+Пусть есть набор $y_1,y_2,\ldots, y_N, \quad N \gg K$
+\vskip 2mm
+
+Vector Quantization (VQ):
+
+$$\min \{ || Y - C X||^2_f \} $$
+
+ограничение:  $\forall i, x_i = e_k$
+*** Разреженное представление					     :B_only:
+    :PROPERTIES:
+    :BEAMER_env: only
+    :BEAMER_envargs: <2>
+    :END:
+$$\min \{ || Y - D X||^2_F \}$$
+
+ограничение: ||x_i||_0 \leq T_0 
+
+
+
+
+** Сам метод
+- Разреженное кодирование: по заданному словарю $D$ вычисляем
+  коэффициенты разложения ($X$)
+- Обновление $D$
+** Обновление $X$
+Задача распадается на независимые задачи вид   
+ $$ y_i = D x_i, \quad ||x_i||_0 \rightarrow \min$$
+Это задача сжатых измерений, для которой хорошо бы найти решалку. 
+** Примеры 
+- Orthogonal matching pursuit
+- Basis pursuit
+- Matching pursuit
+** OMP
+Это жадный алгоритм.
+- Считаем что нормы атомов равны 1
+- Находим невязку
+- Находим столбец, наиболее коллинеарный невязке
+- Добавляем его
+- Находим новое приближение
+- А тут можно подумать, как ускорить
+
+** Какие функции
+Numpy (там есть все!) --- решение линейных систем, массивы.
+\vskip 2mm
+Циклы --- зло
+** Обновление словаря
+Обновление словаря происходит поатомно 
+
+- Цикл по k=1,\ldots,K
+- Находим $y$, которые содержат $d_k$
+- Вычисляем невязку
+$$ E_k = Y - \sum_{j \ne k} d_j x_j.$$
+- Оставляем в $E_k$ только столбцы, в которых $d_k$ участвовал
+- Вычисляем SVD-разложение $E^R_k = U \Delta V^{'top}$ и обновляемся:
+$$d_k = u_1, x^k_R = \Delta(1,1) v_1$$
+
+** Что нужно
+-Операции с матрицами + SVD + относительно хитрые операции с массивами
+#+begin_src python :exports code
+ #a -- numpy array
+ a[a >= 0] = 0
+#+end_src
+
+- Операции с индексами (возможно --- списки)
+
+** Какие тесты
+Для проверки --- синтетические тесты
+
+Генерим случайный словарь $20 \times 50$, в нем генерим какие-нибудь
+сигналы с числом ненулей не больше некторого числа $T_0$. Сигналов,
+например, $1500$. После этого сигналы зашумляем, и пытаемся
+восстановить словарь. 
+
+** Какие тесты (2)
+
+Взять базу данных изображений. Разбить на блоки размера $8 
+times 8$. Это и будут сигналы. Обучить словарь какого-нибудь размера
+(скажем, $500$). 
+
+** Что нужно
+Уметь работать с изображениями. В этом случае есть Python Imaging
+Library --- в ней есть все то, что нужно (в первую очередь, считать
+изображения). 
+
+** Последовательность действий
+- Заводим git
+- Ставим Enthought Python Distribution (там есть Numpy, PIL,
+  Matplotlib)
+- Пишем OMP код
+- Пишем K-SVD код
+- Генерим случайную базу изображений, проверяем
+- Находим адекватную базу изображений, проверяем
+- Заливаем результат на git
