@@ -1,4 +1,3 @@
-#+BIND: org-export-latex-title-command ""
 #+STARTUP: overview
 #+STARTUP: hidestars
 #+OPTIONS: LaTeX:t
@@ -27,48 +26,11 @@
 #+LATEX_HEADER: \def\C{\mathbf{C}}
 ** Geometry
 #+LATEX_HEADER: \usepackage[left=2.5cm,top=2cm,right=2cm,bottom=2cm,a4paper]{geometry}
-#+begin_latex
-\begin{titlepage}
-\begin{center}
-    Московский государственный университет имени М. В. Ломоносова
-
-    \bigskip
-    \includegraphics[width=150mm]{msu.pdf}
-
-    \bigskip
-    факультет вычислительной математики и кибернетики\\
-    кафедра кафедра\\[10mm]
-
-    \textrm{\large
-        Дипломная работа студента N группы\\[10mm]
-        Тема работы
-    }\\[10mm]
-
-    \bigskip
-        \bigskip
-    \begin{flushright}
-        \parbox{0.5\textwidth}{
-            Выполнил:
-
-            студент 5 курса N группы
-
-            Иванов Иван Иванович
-
-            Научный руководитель:
-
-            д.ф-м.н., профессор
-
-            Петров Петр Петрович
-
-        }
-    \end{flushright}
+#+LATEX_HEADER: \input{mytitle}
 
 
-    \vspace{\fill}
-    Москва, 2011
-\end{center}
-\end{titlepage}
-#+end_latex
+
+
 * Введение
 
 Тензоры широко используются в физике, дифференциальной геометрии, 
