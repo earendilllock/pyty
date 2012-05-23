@@ -148,24 +148,26 @@ U M = F.
 ** Численные эксперименты
 Поведение невязки при разных размерностях тензора
 #+begin_center
-#+attr_latex: width=3.5cm
+#+attr_latex: width=8cm
 [[file:zav.pdf]]
 #+end_center
+** 2
 Зависимость времени выполнения программы от размерностей тензора
 #+begin_center
-#+attr_latex: width=3.5cm
+#+attr_latex: width=8cm
 [[file:totd.pdf]]
 #+end_center
 
 ** Численные эксперименты2
 Зависимость времени выполнения программы от различных рангов
 #+begin_center
-#+ATTR_LaTeX: width=3.5cm
+#+ATTR_LaTeX: width=8cm
 [[file:totr.pdf]]
 #+end_center
+** 3
 Зависимость времени выполнения программы от различных размеров мод
 #+begin_center
-#+attr_latex: width=3.5cm
+#+attr_latex: width=8cm
 [[file:timeotdimenss.pdf]]
 #+end_center
 ** Численные эксперименты3
@@ -174,19 +176,20 @@ A[i,j,k] = \frac{1}{i+j+k+1}  ,   i,j,k =1,2,\ldots,n - 1
 \end{equation*}
 Поведение невязки с разных стартов
 #+begin_center
-#+attr_latex: width=3cm
+#+attr_latex: width=8cm
 [[file:nonrnd5.pdf]]
 #+end_center
+** 4
 Поведение невязки при извменении ранга 5,20,37
 #+begin_center
-#+attr_latex: width=3cm
+#+attr_latex: width=8cm
 [[file:r52037.pdf]]
 #+end_center
 ** Тензор матричного умножения
 Поведение невязки тензора матричного умножения при ранге 7 и 6
 
 #+begin_center
-#+attr_latex: width=5cm
+#+attr_latex: width=8cm
 [[file:umnoj.pdf]]
 #+end_center
 ** Выводы и планы
