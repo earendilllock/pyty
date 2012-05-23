@@ -67,6 +67,7 @@ def lefts(u,k,d,r):
   return m
     
 def ALSproc(a,d,r,dimension,eps):
+  k=0
   a1=a.copy()
   norma=norm(a1)
   nrm=norma
@@ -75,15 +76,20 @@ def ALSproc(a,d,r,dimension,eps):
   u=list(arange(d))
   for i in xrange(0,d):
     u[i]=randn(dimension[i],r)
-  eps=1e-6
 
-  while(norma>eps*nrm):
+  norm2=1
+  while(norma>eps*nrm and norm2>eps and k<15000):
+    k=k+1
     for i in xrange(0,d):
       y=rights(a,u,dimension,d,r,i)
       l=lefts(u,i,d,r)
-      u[i]=solve(l,y.transpose()).transpose()
+      
+      unew=solve(l,y.transpose()).transpose()
+      norm2=norm(unew-u[i])/norm(u[i])
+      u[i]=unew.copy()
     a1=gettensor(u,r,dimension,d)
     norma=norm(a1-a)
     no=no+[norma]
+
   return a1,u,no         
 
