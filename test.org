@@ -3,6 +3,7 @@
 #+OPTIONS: LaTeX:t
 #+OPTIONS: toc:nil
 #+LaTeX_CLASS: per-file-class
+
 #+TITLE: Каноническая аппроксимация тензоров и ее реализация на Python
 #+AUTHOR: Кузнецов М.А.
 #+DATE: 
@@ -64,7 +65,8 @@
 аппроксимации произвольного тензора, написанные на Python.
 
 * Основные определения и понятия
-Введем основные определения, необходимые для дальнейшего изложени:
+Введем основные определения, необходимые для дальнейшего изложения:
+
 /Определение/
   
  Тензором A размерности $d$ назовем многомерный массив, элементы которого A(i_1,i_2,\ldots,i_d) имеют $d$ 
@@ -389,7 +391,7 @@ A=U_1\hat U_2 \ldots \hat U_{d-1} U_d;
 \end{equation*}
 
 где $\hat U_j$ имеет вид:
-
+\begin{equation*}
 \left(
 \begin{matrix}
 U_{j}(1) &0&0& \ldots &0\\
@@ -398,36 +400,36 @@ U_{j}(1) &0&0& \ldots &0\\
 0&\ldots&0&0&U_{j}(r)\\
 \end{matrix}
 \right);
-
+\end{equation*}
 $U_j(k)$ --- столбец матрицы $U_j$, $j=2,\ldots,d-1$, $k=1,\ldots,r$.
-$\hat U_j \in \matbb{R}^{r,rn}$
+$\hat U_j \in \mathbb{R}^{r,rn}$
 
 Код процедуры:
 #+begin_src python :exports code
-def randomtensor(r,dimension,d):
-  u=list(arange(d))
-  for i in range(0,d):
-    u[i]=randn(dimension[i],r)
-  u0=[x.copy() for x in u]
-  s=1
-  tr=u[0]
-  temp=list(arange(d-2))
-  for j in range(0,d-2):
-    temp=zeros((r,r*dimension[j+1]))
-    for i in range(0,r):
-      temp[i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
-    u[j+1]=temp.transpose()
-  for i in range(0,d-1):
-    s=size(tr)/r
-    tr=tr.reshape(s,r,order='F')
-    tr=dot(tr,u[i+1].transpose())
-  tr=tr.reshape(dimension,order='F')
-  return tr,u0
+  def randomtensor(r,dimension,d):
+    u=list(arange(d))
+    for i in range(0,d):
+      u[i]=randn(dimension[i],r)
+    u0=[x.copy() for x in u]
+    s=1
+    tr=u[0]
+    temp=list(arange(d-2))
+    for j in range(0,d-2):
+      temp=zeros((r,r*dimension[j+1]))
+      for i in range(0,r):
+        temp[i,i*dimension[j+1]:i*dimension[j+1]+dimension[j+1]]=u[j+1][:,i].transpose()
+      u[j+1]=temp.transpose()
+    for i in range(0,d-1):
+      s=size(tr)/r
+      tr=tr.reshape(s,r,order='F')
+      tr=dot(tr,u[i+1].transpose())
+    tr=tr.reshape(dimension,order='F')
+    return tr,u0
 #+end_src
 Входные данные: ранг, размеры мод, размерность тензора
 Выходные данные: построенный тензор, факторы тензорного разложения.
 
-** Функиця получения тензора по заданным факторам
+** Функция получения тензора по заданным факторам
 Идея преобразований аналогична изложенной в предыдущем пункте, поэтому ограничимся только 
 предоставлением реализации:
 #+begin_src python :exports  code
@@ -458,7 +460,7 @@ def gettensor(u1,r,dimension,d):
 может быть выполнен за большое время, если алгоритм попал в область локального 
 минимума функционала. Всвязи с этим дополнительно считается 
 \begin{equation*}
-\frac{||U_{i new}-U_{i}||_2}{||U_i||_2} < \varepsilon_2},
+\frac{||U_{i new}-U_{i}||_2}{||U_i||_2} < \varepsilon_2,
 \end{equation*}
 где точность \varepsilon_2 зависит от заданной пользователем \varepsilon
 3) Превышение допустимого количества итераций (допустимым по умолчанию считается 45000 итераций)
@@ -467,7 +469,7 @@ def gettensor(u1,r,dimension,d):
 В качестве входных данных подавались:
  - Размерность тензора $d$ = 3
  - Ранг $r$ переменный
- - Размерности мод $dimension_i$ переменные
+ - Размерности мод $n_i$ переменные
 ** Численные эксперименты для случайных тензоров
  В качестве входного тензора подается тензор, случайным образом полученный программно (с помощью процедуры
 gettensor) наперед заданного ранга и размерностей мод. 
@@ -483,8 +485,8 @@ ALS, реализованного на Python.
 Ниже приводятся графики поведения нормы невязки  в зависимости от числа итераций. 
 
 - Для случайного тензора ранга $r$ = 5
-#+attr_latex: width=8cm
-#+begin_src python :exports results :results output raw :cashe yes
+
+#+begin_src python :exports none :results none :cashe yes
 from test import *
 from numpy import *
 from pylab import *
@@ -504,19 +506,20 @@ savefig(fname)
 print "[[file:%s]]" % fname
 #+end_src
 
-#+results:
-| file:rnd5.pdf |
+#+begin_center
+#+ATTR_LaTeX: width=11cm
+[[file:rnd5.pdf]]
+#+end_center
 
 
 
 
 - Для случайного тензора ранга $r$ = 10
 
-На этом примере метод попал в локальный минимум функционала (\eq2), вследствии чего невязка убывает медленно почти
+На этом примере метод попал в локальный минимум функционала \eqref{curs:eq2}, вследствии чего невязка убывает медленно почти
 на всем протяжении времени работы алгоритма. Однако миновав локальный минимум, метод сошелся очень быстро.
-#+attr_latex: width=8cm
-#+name: pic1
-#+begin_src python :exports results :results output raw :cashe yes
+
+#+begin_src python :exports none :results none :cashe yes
 from test import *
 from numpy import *
 from pylab import *
@@ -536,10 +539,14 @@ savefig(fname)
 print "[[file:%s]]" % fname
 #+end_src
 
+#+begin_center
+#+ATTR_LaTeX: width=11cm
 [[file:rnd10.pdf]]
+#+end_center
 
 - Для случайного тензора ранга $r$ = 25
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 #+begin_src python :exports results :results output raw :cashe yes
 from test import *
 from numpy import *
@@ -560,9 +567,11 @@ savefig(fname)
 print "[[file:%s]]" % fname
 #+end_src
 [[file:rnd25.pdf]]
+#+end_center
 
 - Для случайного тензора ранга $r$ = 100
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 #+begin_src python :exports results :results output raw :cashe yes
 from test import *
 from numpy import *
@@ -582,8 +591,8 @@ savefig(fname)
 #clf()
 print "[[file:%s]]" % fname
 #+end_src
-
 [[file:rnd100.pdf]]
+#+end_center
 
 Несмотря на то, что скорость убывания невязки может варьироваться в зависимости от ранга и начального приближения,
 невязка убывает монотонно.
@@ -592,7 +601,6 @@ print "[[file:%s]]" % fname
 - ранга $r$ при фиксированных размерностях тензора
  
 
-#+attr_latex: width=8cm
 #+begin_src python :exports none :results none
 from test import *
 from numpy import *
@@ -615,7 +623,7 @@ ylabel('time')
 title('Graphic of time')
 fname="totr.pdf"
 savefig(fname)
-#clf()
+clf()
 print "[[file:%s]]" % fname
 #+end_src
 
@@ -626,9 +634,10 @@ print "[[file:%s]]" % fname
 - размерностей тензора $n_i$ (i = 1,2,3) при фиксированном ранге
 
 Эта серия экспериментов проводилась с целью изучения зависимости времени выполнения программы от размерностей мод $n_i$ = 32,64,128,250,500 и ранге $r$ = 5.
-
-#+attr_latex: width=8cm 
+#+begin_center
+#+ATTR_LaTeX: width=11cm
 [[file:totr.pdf]]
+#+end_center
 
 Логичным является проверить зависимость времени выполнения программы от различных
 размерностей мод. В данном эксперименте $dimension_i$ брались равными: 16, 32, 64, 128, 250,
@@ -660,17 +669,23 @@ savefig(fname)
 #clf()
 print "[[file:%s]]" % fname
 #+end_src
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:timeotdimenss.pdf]]
+#+end_center
 
 Построим сравнительный график убывания невязки при разных размерностях тензора $d$=3,4,5
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:zav.pdf]]
+#+end_center
 
 И зависмость времени выполнения программы от размерности тензора $d$
 
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:totd.pdf]]
+#+end_center
 
 ** Эксперименты над неслучайными тензорами
 
@@ -704,32 +719,38 @@ savefig(fname)
 #clf()
 print "[[file:%s]]" % fname
 #+end_src
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:nonrnd5.pdf]]
+#+end_center
 
 Метод сошелся за 35000 итераций (была достигнута точность 10^{-6}), однако большую часть времени он находился в области 
 локального минимума, а невязка быстро убывала только в начале. Увеличенный график приводится ниже:
 
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:nooo.pdf]]
+#+end_center
 
 Проследим изменение скорости убывания невязки при изменении ранга.
 $r = 5,20,37$
 
 Желтая линия соответствует рангу 37, лиловая 20, а голубая 5.
 
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:r52037.pdf]]
-
+#+end_center
 ** Эксперименты с тензором матричного умножения
 В ходе этих экспериментов на вод подавался тензор $4\times4\times4$ , получаемый 
 из алгоритма Штрассена быстрого перемножения матриц. Как и ожидалось, метод сапроксимировал 
 тензор при ранге r = 7 ,а на ранге 6 построить аппроксимацию не удалось. Нижеприведенный
 график иллюстрирует поведение невязки в ходе выполнения программы.
 
-#+attr_latex: width=8cm
+#+begin_center
+#+attr_latex: width=11cm
 [[file:umnoj.pdf]]
-
+#+end_center
 * Заключение
 В ходе выполнения работы была получена реализация алгоритма ALS, удовлетворяющая требованиям:
 1) Независимости от размерносмти тензора
@@ -739,4 +760,7 @@ $r = 5,20,37$
 
 
 
+
+
 \bibliography{cursov}
+\bibliographystyle{plain}
